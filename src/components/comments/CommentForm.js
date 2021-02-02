@@ -1,27 +1,28 @@
 import React, { useContext, useRef, useState } from "react"
 import { CommentContext } from "./CommentProvider"
+import { PostContext } from "../posts/PostProvider"
 
 // subject and comment
 export const CommentForm = (props) => {
 
     // const [selectedCategory, setSelectedCategory] = useState(0)
-    const { addComment } = useContext(CommentContext)
+    const { comment, addComment } = useContext(CommentContext)
+    const { post } = useContext(PostContext)
     
     const subject = useRef(null)
     const content = useRef(null)
 
     const constructNewComment = () => {
         let currentDate = new Date()
-        {
+        console.log("PROPS as follow", props)
+        {   
             addComment({
-                // post_id   : post_id, // to-do: get post_id?
-                author_id : parseInt(localStorage.getItem("app_user_id")),
-                content   : content,
-                subject   : subject
+                post_id     : 5,
+                author_id   : parseInt(localStorage.getItem("app_user_id")),
+                content     : content.current.value,
+                subject     : subject.current.value
             })
-            console.log("add comment", addComment)
-                .then(() => props.history.push("/PostDetails"))
-                // thinking the PostDetails page will have a PostComments component?
+            .then((post) => props.history.push(`/posts/${post.id}`))
         }
     }
 
